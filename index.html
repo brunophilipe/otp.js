@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="OTP-manager : HMAC-based (HOTP) and Time-based (TOTP) One-Time Password manager and works with Google Authenticator.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>OTP-manager</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/njl07/otp-manager">View on GitHub</a>
+
+          <h1 id="project_title">OTP-manager</h1>
+          <h2 id="project_tagline">HMAC-based (HOTP) and Time-based (TOTP) One-Time Password manager and works with Google Authenticator.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/njl07/otp-manager/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/njl07/otp-manager/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p><a href="https://travis-ci.org/njl07/otp-manager"><img src="https://travis-ci.org/njl07/otp-manager.svg" alt="Build Status"></a>
+<a href="https://coveralls.io/r/njl07/otp-manager?branch=master"><img src="https://coveralls.io/repos/njl07/otp-manager/badge.png?branch=master" alt="Coverage Status"></a>
+<a href="http://badge.fury.io/js/otp-manager"><img src="https://badge.fury.io/js/otp-manager.png" alt="npm version"></a></p>
+
+<p><a href="https://nodei.co/npm/otp-manager/"><img src="https://nodei.co/npm/otp-manager.png?downloads=true&amp;downloadRank=true&amp;stars=true" alt="NPM"></a></p>
+
+<h2>
+<a id="one-time-password-manager" class="anchor" href="#one-time-password-manager" aria-hidden="true"><span class="octicon octicon-link"></span></a>One-Time Password manager</h2>
+
+<p>One Time Password manager is fully compliant with <a href="http://tools.ietf.org/html/rfc4226">HOTP</a> (counter based one time passwords) and <a href="http://tools.ietf.org/html/rfc6238">TOTP</a> (time based one time passwords). It can be used in conjunction with the <code>Google Authenticator</code> which has free apps for <code>iOS</code>, <code>Android</code> and <code>BlackBerry</code>.</p>
+
+<p>All methods described in both <code>RFC</code> are implemented in <a href="#api">API</a>.</p>
+
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li>
+<a href="#getting-started">Getting started</a>
+
+<ul>
+<li><a href="#otp-generation">OTP Generation</a></li>
+<li><a href="#otp-verification">OTP Verification</a></li>
+</ul>
+</li>
+<li><a href="#google-authenticator">Google Authenticator</a></li>
+<li>
+<a href="#api">API</a>
+
+<ul>
+<li><a href="#hotpgenkey-opt">HOTP.gen(key, [opt])</a></li>
+<li><a href="#hotpverifytoken-key-opt">HOTP.verify(token, key, [opt])</a></li>
+<li><a href="#totpgenkey-opt">TOTP.gen(key, [opt])</a></li>
+<li><a href="#totpverifytoken-key-opt">TOTP.verify(token, key, [opt])</a></li>
+</ul>
+</li>
+<li><a href="#release-history">Release History</a></li>
+<li><a href="#license">License</a></li>
+</ul>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>Install module with: <code>npm install --save otp-manager</code></p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> OTPManager <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>otp-manager<span class="pl-pds">'</span></span>);</pre></div>
+
+<h2>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting started</h2>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> OTPManager <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>otp-manager<span class="pl-pds">'</span></span>);
+
+<span class="pl-c">// get HOTP object</span>
+<span class="pl-s">var</span> HOTP <span class="pl-k">=</span> OTPManager.hotp;</pre></div>
+
+<h3>
+<a id="otp-generation" class="anchor" href="#otp-generation" aria-hidden="true"><span class="octicon octicon-link"></span></a>OTP Generation</h3>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">try</span>
+{
+    <span class="pl-c">// generate otp for key '12345678901234567890' in string format</span>
+    <span class="pl-s">var</span> otp <span class="pl-k">=</span> HOTP.gen({string<span class="pl-k">:</span><span class="pl-s1"><span class="pl-pds">'</span>12345678901234567890<span class="pl-pds">'</span></span>});
+
+    <span class="pl-en">console</span><span class="pl-s3">.log</span>(otp); <span class="pl-c">// print otp result =&gt; 755224</span>
+}
+<span class="pl-k">catch</span>(ex)
+{
+    <span class="pl-en">console</span><span class="pl-s3">.error</span>(ex); <span class="pl-c">// print error occurred during OTP generation process</span>
+}</pre></div>
+
+<h3>
+<a id="otp-verification" class="anchor" href="#otp-verification" aria-hidden="true"><span class="octicon octicon-link"></span></a>OTP Verification</h3>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">try</span>
+{
+    <span class="pl-c">// verify otp '755224' for key '12345678901234567890' in string format</span>
+    <span class="pl-s">var</span> result <span class="pl-k">=</span> HOTP.verify(<span class="pl-s1"><span class="pl-pds">'</span>755224<span class="pl-pds">'</span></span>, {string<span class="pl-k">:</span><span class="pl-s1"><span class="pl-pds">'</span>12345678901234567890<span class="pl-pds">'</span></span>});
+
+    <span class="pl-en">console</span><span class="pl-s3">.log</span>(result); <span class="pl-c">// print result =&gt; {delta:{int:0}}</span>
+}
+<span class="pl-k">catch</span>(ex)
+{
+    <span class="pl-en">console</span><span class="pl-s3">.error</span>(ex); <span class="pl-c">// print error occurred during OTP verification process</span>
+}</pre></div>
+
+<h2>
+<a id="google-authenticator" class="anchor" href="#google-authenticator" aria-hidden="true"><span class="octicon octicon-link"></span></a>Google Authenticator</h2>
+
+<p>To be implemented.</p>
+
+<h2>
+<a id="api" class="anchor" href="#api" aria-hidden="true"><span class="octicon octicon-link"></span></a>API</h2>
+
+<p>All examples assume as base:</p>
+
+<ul>
+<li><code>var HOTP = require('otp-manager').hotp;</code></li>
+<li><code>var TOTP = require('otp-manager').totp;</code></li>
+</ul>
+
+<h3>
+<a id="hotpgenkey-opt" class="anchor" href="#hotpgenkey-opt" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>HOTP.gen(key, [opt])</code>
+</h3>
+
+<p>Returns a counter based one-time password.</p>
+
+<p><strong>key</strong></p>
+
+<blockquote>
+<p>Key for the one time password. This should be unique and secret for every user as this is the seed that is used to calculate the HMAC.
+Key is an object with 2 exclusive attributes to define the key's format: <code>ASCII string</code> or <code>Hexadecimal string (&gt;=2-digit)</code>.</p>
+
+<p>e.g: <code>{string:'12345678901234567890'}</code> or <code>{hex: '3132333435363738393031323334353637383930'}</code></p>
+</blockquote>
+
+<p><strong>opt</strong></p>
+
+<blockquote>
+<p>Object option to generate HOTP and can contain the following attributes:</p>
+
+<ul>
+<li>
+<p><code>counter</code>: this should be stored by the application, must be user specific, and be incremented for each request.
+Counter is an object with 2 exclusive attributes to define the counter's format: <code>integer (&lt;=2^53)</code> or <code>hexadecimal string (&lt;=16-digit)</code>.</p>
+
+<blockquote>
+<p>e.g: <code>{counter:{int:0}}</code> or <code>{counter:{hex:'0'}}</code></p>
+
+<p>Default value is: <code>{counter:{int:0}}</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>codeDigits</code>: the number of digits in the OTP, not including the checksum, if any.
+If you want <code>6 digits</code> and you <code>add checksum</code>, finally OTP length will be <code>7 digits</code>.</p>
+
+<blockquote>
+<p>Default value is: <code>{codeDigits:6}</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>addChecksum</code>: a flag that indicates if a checksum digit should be appended to the OTP.</p>
+
+<blockquote>
+<p>Default value is: <code>{addChecksum:false}</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>truncationOffset</code>: the offset into the MAC result to begin truncation. If this value is out of the range of <code>0 ... 15</code>, then dynamic truncation will be used. Dynamic truncation is when the last 4 bits of the last byte of the MAC are used to determine the start offset.</p>
+
+<blockquote>
+<p>Default value is: <code>undefined</code> for dynamic truncation</p>
+</blockquote>
+</li>
+<li>
+<p><code>algorithm</code>: the algorithm to create HMAC (<code>sha1</code>, <code>sha256</code>, <code>sha512</code>)</p>
+
+<blockquote>
+<p>Default value is: <code>sha1</code></p>
+</blockquote>
+</li>
+</ul>
+
+<p>Finally, <code>opt</code> object will be like this:</p>
+
+<blockquote>
+<p>Default value: <code>{counter:{int:0}, codeDigits:6, addChecksum:false, algorithm:'sha1'}</code></p>
+</blockquote>
+</blockquote>
+
+<h3>
+<a id="hotpverifytoken-key-opt" class="anchor" href="#hotpverifytoken-key-opt" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>HOTP.verify(token, key, [opt])</code>
+</h3>
+
+<p>Check a counter based one time password for validity.</p>
+
+<p>Returns <code>null</code> if token is not valid for given key and options.</p>
+
+<p>Returns an object <code>{delta: {int: #}}</code> or <code>{delta: {hex: '#'}}</code>, following counter format, if the token is valid. <code>delta</code> is the count skew between client and server.</p>
+
+<p><strong>token</strong></p>
+
+<blockquote>
+<p>Passcode to validate</p>
+</blockquote>
+
+<p><strong>key</strong></p>
+
+<blockquote>
+<p>Key for the one time password. This should be unique and secret for every user as this is the seed that is used to calculate the HMAC.
+Key is an object with 2 exclusive attributes to define the key's format: <code>ASCII string</code> or <code>Hexadecimal string (&gt;=2-digit)</code>.</p>
+
+<p>e.g: <code>{string:'12345678901234567890'}</code> or <code>{hex: '3132333435363738393031323334353637383930'}</code></p>
+</blockquote>
+
+<p><strong>opt</strong></p>
+
+<blockquote>
+<p>Object option to verify HOTP and can contain the following attributes:</p>
+
+<ul>
+<li>
+<p><code>window</code>: The allowable margin for the counter.  The function will check 'W' codes in the future against the provided passcode.  Note, it is the calling applications responsibility to keep track of 'C' and increment it for each password check, and also to adjust it accordingly in the case where the client and server become out of sync (second argument returns non zero).</p>
+
+<blockquote>
+<p>e.g: if <code>W = 50</code>, and <code>C = 15</code>, this function will check the passcode against all One Time Passcodes between <code>15</code> and <code>65</code>.</p>
+
+<p>Default value is: <code>50</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>counter</code>: this should be stored by the application, must be user specific, and be incremented for each success request if <code>delta &gt;= 0</code>.
+Increment value will be <code>delta + 1</code>.
+Counter is an object with 2 exclusive attributes to define the counter's format: <code>integer (&lt;=2^53)</code> or <code>hexadecimal string (&lt;=16-digit)</code>.</p>
+
+<blockquote>
+<p>e.g: <code>{counter:{int:0}}</code> or <code>{counter:{hex:'0'}}</code></p>
+
+<p>Default value is: <code>{counter:{int:0}}</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>addChecksum</code>: a flag that indicates if a checksum digit should be appended to the OTP.</p>
+
+<blockquote>
+<p>Default value is: <code>{addChecksum:false}</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>truncationOffset</code>: the offset into the MAC result to begin truncation. If this value is out of the range of <code>0 ... 15</code>, then dynamic truncation will be used. Dynamic truncation is when the last 4 bits of the last byte of the MAC are used to determine the start offset.</p>
+
+<blockquote>
+<p>Default value is: <code>undefined</code> for dynamic truncation</p>
+</blockquote>
+</li>
+<li>
+<p><code>algorithm</code>: the algorithm to create HMAC (<code>sha1</code>, <code>sha256</code>, <code>sha512</code>)</p>
+
+<blockquote>
+<p>Default value is: <code>sha1</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>previousOTPAllowed</code>: a flag to allow OTP validation before current counter.</p>
+
+<blockquote>
+<p>e.g: if <code>P = true</code>, <code>W = 50</code>, and <code>C = 15</code>, this function will check the passcode against all One Time Passcodes between <code>0</code> and <code>65</code> because <code>min</code> value must be always <code>&gt;=0</code></p>
+
+<p>e.g: if <code>P = true</code>, <code>W = 50</code>, and <code>C = 150</code>, this function will check the passcode against all One Time Passcodes between <code>100</code> and <code>200</code></p>
+
+<p>Default value is: <code>{previousOTPAllowed:false}</code></p>
+</blockquote>
+</li>
+</ul>
+
+<p>Finally, <code>opt</code> object will be like this:</p>
+
+<blockquote>
+<p>Default value: <code>{window:50, counter:{int:0}, addChecksum:false, algorithm:'sha1', previousOTPAllowed:false}</code></p>
+</blockquote>
+</blockquote>
+
+<h3>
+<a id="totpgenkey-opt" class="anchor" href="#totpgenkey-opt" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>TOTP.gen(key, [opt])</code>
+</h3>
+
+<p>Return a time based one time password</p>
+
+<p><strong>key</strong></p>
+
+<blockquote>
+<p>Key for the one time password. This should be unique and secret for every user as this is the seed that is used to calculate the HMAC.
+Key is an object with 2 exclusive attributes to define the key's format: <code>ASCII string</code> or <code>Hexadecimal string (&gt;=2-digit)</code>.</p>
+
+<p>e.g: <code>{string:'12345678901234567890'}</code> or <code>{hex: '3132333435363738393031323334353637383930'}</code></p>
+</blockquote>
+
+<p><strong>opt</strong></p>
+
+<blockquote>
+<p>Object option to generate TOTP and can contain the following attributes:</p>
+
+<ul>
+<li>
+<p><code>time</code>: the time step of the counter in seconds. This must be the same for every request and is used to calculate C.</p>
+
+<blockquote>
+<p>Default value is: <code>{time:30}</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>timestamp</code>: OTP validity timestamp.</p>
+
+<blockquote>
+<p>Default value is: <code>{timestamp:new Date().getTime()}</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>codeDigits</code>: the number of digits in the OTP, not including the checksum, if any.
+If you want <code>6 digits</code> and you <code>add checksum</code>, finally OTP length will be <code>7 digits</code>.</p>
+
+<blockquote>
+<p>Default value is: <code>{codeDigits:6}</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>addChecksum</code>: a flag that indicates if a checksum digit should be appended to the OTP.</p>
+
+<blockquote>
+<p>Default value is: <code>{addChecksum:false}</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>truncationOffset</code>: the offset into the MAC result to begin truncation. If this value is out of the range of <code>0 ... 15</code>, then dynamic truncation will be used. Dynamic truncation is when the last 4 bits of the last byte of the MAC are used to determine the start offset.</p>
+
+<blockquote>
+<p>Default value is: <code>undefined</code> for dynamic truncation</p>
+</blockquote>
+</li>
+<li>
+<p><code>algorithm</code>: the algorithm to create HMAC (<code>sha1</code>, <code>sha256</code>, <code>sha512</code>)</p>
+
+<blockquote>
+<p>Default value is: <code>sha1</code></p>
+</blockquote>
+</li>
+</ul>
+
+<p>Finally, <code>opt</code> object will be like this:</p>
+
+<blockquote>
+<p>Default value: <code>{time:30, timestamp:new Date().getTime(), codeDigits:6, addChecksum:false, algorithm:'sha1'}</code></p>
+</blockquote>
+</blockquote>
+
+<h3>
+<a id="totpverifytoken-key-opt" class="anchor" href="#totpverifytoken-key-opt" aria-hidden="true"><span class="octicon octicon-link"></span></a><code>TOTP.verify(token, key, [opt])</code>
+</h3>
+
+<p>Check a time based one time password for validity.</p>
+
+<p>Returns <code>null</code> if token is not valid for given key and options.</p>
+
+<p>Returns an object <code>{delta: #}</code> if the token is valid. <code>delta</code> is the count skew between client and server.</p>
+
+<p><strong>token</strong></p>
+
+<blockquote>
+<p>Passcode to validate</p>
+</blockquote>
+
+<p><strong>key</strong></p>
+
+<blockquote>
+<p>Key for the one time password. This should be unique and secret for every user as this is the seed that is used to calculate the HMAC.
+Key is an object with 2 exclusive attributes to define the key's format: <code>ASCII string</code> or <code>Hexadecimal string (&gt;=2-digit)</code>.</p>
+
+<p>e.g: <code>{string:'12345678901234567890'}</code> or <code>{hex: '3132333435363738393031323334353637383930'}</code></p>
+</blockquote>
+
+<p><strong>opt</strong></p>
+
+<blockquote>
+<p>Object option to verify HOTP and can contain the following attributes:</p>
+
+<ul>
+<li>
+<p><code>window</code>: The allowable margin, time steps in seconds since T0, for the counter.  The function will check 'W' codes in the past and the future against the provided passcode.  Note, it is the calling applications responsibility to keep track of 'C' and increment it for each password check, and also to adjust it accordingly in the case where the client and server become out of sync (second argument returns non zero).</p>
+
+<blockquote>
+<p>e.g: if <code>W = 5</code>, and <code>C = 100</code>, this function will check the passcode against all One Time Passcodes between <code>95</code> and <code>105</code>.</p>
+
+<p>Default value is: <code>6</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>time</code>: the time step of the counter in seconds. This must be the same for every request and is used to calculate C.</p>
+
+<blockquote>
+<p>Default value is: <code>{time:30}</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>timestamp</code>: OTP validity timestamp.</p>
+
+<blockquote>
+<p>Default value is: <code>{timestamp:new Date().getTime()}</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>addChecksum</code>: a flag that indicates if a checksum digit should be appended to the OTP.</p>
+
+<blockquote>
+<p>Default value is: <code>{addChecksum:false}</code></p>
+</blockquote>
+</li>
+<li>
+<p><code>truncationOffset</code>: the offset into the MAC result to begin truncation. If this value is out of the range of <code>0 ... 15</code>, then dynamic truncation will be used. Dynamic truncation is when the last 4 bits of the last byte of the MAC are used to determine the start offset.</p>
+
+<blockquote>
+<p>Default value is: <code>undefined</code> for dynamic truncation</p>
+</blockquote>
+</li>
+<li>
+<p><code>algorithm</code>: the algorithm to create HMAC (<code>sha1</code>, <code>sha256</code>, <code>sha512</code>)</p>
+
+<blockquote>
+<p>Default value is: <code>sha1</code></p>
+</blockquote>
+</li>
+</ul>
+
+<p>Finally, <code>opt</code> object will be like this:</p>
+
+<blockquote>
+<p>Default value: <code>{window:6, time:30, timestamp:new Date().getTime(), addChecksum:false, algorithm:'sha1'}</code></p>
+</blockquote>
+</blockquote>
+
+<h2>
+<a id="release-history" class="anchor" href="#release-history" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release History</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left">Version</th>
+<th align="left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">0.7.0</td>
+<td align="left">Version with Google Authenticator implementation</td>
+</tr>
+<tr>
+<td align="left">0.6.0</td>
+<td align="left">Version with TOTP verification implementation</td>
+</tr>
+<tr>
+<td align="left">0.5.1</td>
+<td align="left">Refactor tests - only unit tests</td>
+</tr>
+<tr>
+<td align="left">0.5.0</td>
+<td align="left">Option to allow validation for OTP were generated before current counter</td>
+</tr>
+<tr>
+<td align="left">0.4.0</td>
+<td align="left">Version with TOTP generation implementation</td>
+</tr>
+<tr>
+<td align="left">0.3.0</td>
+<td align="left">Add algorithm choice to generate and verify OTP (sha1, sha256, sha512)</td>
+</tr>
+<tr>
+<td align="left">0.2.0</td>
+<td align="left">Version with HOTP verification implementation</td>
+</tr>
+<tr>
+<td align="left">0.1.3</td>
+<td align="left">Update unit tests</td>
+</tr>
+<tr>
+<td align="left">0.1.2</td>
+<td align="left">Update tests and schemas validation</td>
+</tr>
+<tr>
+<td align="left">0.1.1</td>
+<td align="left">Update integration tests</td>
+</tr>
+<tr>
+<td align="left">0.1.0</td>
+<td align="left">Version with HOTP generation implementation</td>
+</tr>
+<tr>
+<td align="left">0.0.3</td>
+<td align="left">Version Bump for publish</td>
+</tr>
+<tr>
+<td align="left">0.0.2</td>
+<td align="left">API movement</td>
+</tr>
+<tr>
+<td align="left">0.0.1</td>
+<td align="left">First Prototype</td>
+</tr>
+</tbody>
+</table>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>Copyright (c) 2014 Nicolas Jessel. Licensed under the <a href="https://github.com/njl07/otp-manager/blob/master/LICENSE.md">MIT license</a>.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">OTP-manager maintained by <a href="https://github.com/njl07">njl07</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
