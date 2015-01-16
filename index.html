@@ -1,41 +1,38 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="OTP-manager : HMAC-based (HOTP) and Time-based (TOTP) One-Time Password manager and works with Google Authenticator.">
+    <title>otp.js by njl07</title>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>OTP-manager</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
-
   <body>
+    <div class="wrapper">
+      <header>
+        <h1>otp.js</h1>
+        <p>HMAC-based (HOTP) and Time-based (TOTP) One-Time Password manager. Works with Google Authenticator.</p>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/njl07/otp-manager">View on GitHub</a>
+        <p class="view"><a href="https://github.com/njl07/otp.js">View the Project on GitHub <small>njl07/otp.js</small></a></p>
 
-          <h1 id="project_title">OTP-manager</h1>
-          <h2 id="project_tagline">HMAC-based (HOTP) and Time-based (TOTP) One-Time Password manager and works with Google Authenticator.</h2>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/njl07/otp-manager/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/njl07/otp-manager/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
+        <ul>
+          <li><a href="https://github.com/njl07/otp.js/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/njl07/otp.js/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/njl07/otp.js">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <p><a href="https://travis-ci.org/njl07/otp.js"><img src="https://travis-ci.org/njl07/otp.js.svg" alt="Build Status"></a>
+<a href="https://coveralls.io/r/njl07/otp.js?branch=master"><img src="https://coveralls.io/repos/njl07/otp.js/badge.png?branch=master" alt="Coverage Status"></a>
+<a href="http://badge.fury.io/js/otp.js"><img src="https://badge.fury.io/js/otp.js.png" alt="npm version"></a></p>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <p><a href="https://travis-ci.org/njl07/otp-manager"><img src="https://travis-ci.org/njl07/otp-manager.svg" alt="Build Status"></a>
-<a href="https://coveralls.io/r/njl07/otp-manager?branch=master"><img src="https://coveralls.io/repos/njl07/otp-manager/badge.png?branch=master" alt="Coverage Status"></a>
-<a href="http://badge.fury.io/js/otp-manager"><img src="https://badge.fury.io/js/otp-manager.png" alt="npm version"></a></p>
-
-<p><a href="https://nodei.co/npm/otp-manager/"><img src="https://nodei.co/npm/otp-manager.png?downloads=true&amp;downloadRank=true&amp;stars=true" alt="NPM"></a></p>
+<p><a href="https://nodei.co/npm/otp.js/"><img src="https://nodei.co/npm/otp.js.png?downloads=true&amp;downloadRank=true&amp;stars=true" alt="NPM"></a></p>
 
 <h2>
 <a id="one-time-password-manager" class="anchor" href="#one-time-password-manager" aria-hidden="true"><span class="octicon octicon-link"></span></a>One-Time Password manager</h2>
@@ -72,17 +69,17 @@
 <h2>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
 
-<p>Install module with: <code>npm install --save otp-manager</code></p>
+<p>Install module with: <code>npm install --save otp.js</code></p>
 
-<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> OTPManager <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>otp-manager<span class="pl-pds">'</span></span>);</pre></div>
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> OTP <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>otp.js<span class="pl-pds">'</span></span>);</pre></div>
 
 <h2>
 <a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting started</h2>
 
-<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> OTPManager <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>otp-manager<span class="pl-pds">'</span></span>);
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> OTP <span class="pl-k">=</span> <span class="pl-s3">require</span>(<span class="pl-s1"><span class="pl-pds">'</span>otp.js<span class="pl-pds">'</span></span>);
 
 <span class="pl-c">// get HOTP object</span>
-<span class="pl-s">var</span> HOTP <span class="pl-k">=</span> OTPManager.hotp;</pre></div>
+<span class="pl-s">var</span> HOTP <span class="pl-k">=</span> OTP.hotp;</pre></div>
 
 <h3>
 <a id="otp-generation" class="anchor" href="#otp-generation" aria-hidden="true"><span class="octicon octicon-link"></span></a>OTP Generation</h3>
@@ -90,9 +87,9 @@
 <div class="highlight highlight-javascript"><pre><span class="pl-k">try</span>
 {
     <span class="pl-c">// generate otp for key '12345678901234567890' in string format</span>
-    <span class="pl-s">var</span> otp <span class="pl-k">=</span> HOTP.gen({string<span class="pl-k">:</span><span class="pl-s1"><span class="pl-pds">'</span>12345678901234567890<span class="pl-pds">'</span></span>});
+    <span class="pl-s">var</span> code <span class="pl-k">=</span> HOTP.gen({string<span class="pl-k">:</span><span class="pl-s1"><span class="pl-pds">'</span>12345678901234567890<span class="pl-pds">'</span></span>});
 
-    <span class="pl-en">console</span><span class="pl-s3">.log</span>(otp); <span class="pl-c">// print otp result =&gt; 755224</span>
+    <span class="pl-en">console</span><span class="pl-s3">.log</span>(code); <span class="pl-c">// print otp result =&gt; 755224</span>
 }
 <span class="pl-k">catch</span>(ex)
 {
@@ -117,7 +114,7 @@
 <h2>
 <a id="google-authenticator" class="anchor" href="#google-authenticator" aria-hidden="true"><span class="octicon octicon-link"></span></a>Google Authenticator</h2>
 
-<p><img src="images/qrCode.svg"/></p>
+<p>To be implemented.</p>
 
 <h2>
 <a id="api" class="anchor" href="#api" aria-hidden="true"><span class="octicon octicon-link"></span></a>API</h2>
@@ -125,8 +122,9 @@
 <p>All examples assume as base:</p>
 
 <ul>
-<li><code>var HOTP = require('otp-manager').hotp;</code></li>
-<li><code>var TOTP = require('otp-manager').totp;</code></li>
+<li><code>var HOTP = require('otp.js').hotp;</code></li>
+<li><code>var TOTP = require('otp.js').totp;</code></li>
+<li><code>var GA = require('otp.js').googleAuthenticator;</code></li>
 </ul>
 
 <h3>
@@ -520,19 +518,14 @@ Key is an object with 2 exclusive attributes to define the key's format: <code>A
 <h2>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
 
-<p>Copyright (c) 2014 Nicolas Jessel. Licensed under the <a href="https://github.com/njl07/otp-manager/blob/master/LICENSE.md">MIT license</a>.</p>
+<p>Copyright (c) 2014 Nicolas Jessel. Licensed under the <a href="https://github.com/njl07/otp.js/blob/master/LICENSE.md">MIT license</a>.</p>
       </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">OTP-manager maintained by <a href="https://github.com/njl07">njl07</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/njl07">njl07</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
-
+    <script src="javascripts/scale.fix.js"></script>
     
-
   </body>
 </html>
